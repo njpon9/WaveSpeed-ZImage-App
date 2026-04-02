@@ -1,5 +1,7 @@
 # WaveSpeed Z-Image App (local UI)
 
+**Repository:** [github.com/njpon9/WaveSpeed-ZImage-App](https://github.com/njpon9/WaveSpeed-ZImage-App)
+
 Tkinter front-end for [stable-diffusion.cpp](https://github.com/leejet/stable-diffusion.cpp) (`sd.exe`) with bundled paths under this repo: `bin/`, `models/stable-diffusion/`, `LoRas/`.
 
 ## Why the big files are not in Git
