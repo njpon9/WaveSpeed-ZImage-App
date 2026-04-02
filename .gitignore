@@ -1,0 +1,34 @@
+# Third-party binaries and weights (copy locally after clone)
+bin/
+models/
+
+# Optional duplicate model drops at repo root (not used by default UI paths)
+text_encoders/
+unet/
+vae/
+
+# LoRA weights (keep folder; ignore large files)
+LoRas/*
+!LoRas/.gitkeep
+
+# Generated images, tests, and local screenshots (do not upload to GitHub)
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.bmp
+images/
+
+_smoke_*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Editor / OS
+.DS_Store
+Thumbs.db

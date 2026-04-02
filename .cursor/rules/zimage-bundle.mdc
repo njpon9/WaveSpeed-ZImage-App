@@ -1,0 +1,11 @@
+---
+description: Restoring bin/models/LoRAs after clone; do not commit heavy assets
+globs:
+alwaysApply: false
+---
+
+# Z-Image local bundle
+
+- `bin/`, `models/`, and `LoRas/*.safetensors` are **gitignored** (too large for GitHub).
+- After clone, read [README.md](README.md): run `scripts/copy_wavespeed_bundle.ps1` on Windows if WaveSpeed Desktop is installed, or follow manual download steps.
+- Do not commit multi-GB GGUF/VAE/LLM or `sd.exe`; document or script the copy instead.

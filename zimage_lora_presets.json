@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "simple": {
+    "test_simple_1775114337": [
+      {
+        "name": "zimage_lightslider.safetensors",
+        "weight": 0.66
+      }
+    ],
+    "test_cfg_1775114377": [
+      {
+        "name": "zimage_lightslider.safetensors",
+        "weight": 0.5
+      }
+    ]
+  },
+  "edit": {
+    "test_edit_1775114357": [
+      {
+        "name": "zimage_lightslider.safetensors",
+        "weight": 0.44
+      }
+    ]
+  },
+  "second_pass": {
+    "test_pass_1775114362": [
+      {
+        "name": "zimage_lightslider.safetensors",
+        "weight": 0.44
+      }
+    ]
+  }
+}
