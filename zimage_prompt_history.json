@@ -3,6 +3,486 @@
   "entries": [
     {
       "mode": "simple",
+      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck. Make her thighs thick and butt big, while keeping her waist thin. \n\nHer breasts are size d cup, but make them appear slightly smaller. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no underwear, purely just the dress. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. The ground is gray stone. Make the background grayspace. This is a photo of na0_mi on her knees. Her breasts and vagina are covered by the dress. You CANNOT see her nipples directly. The dress should completely cover the nipples, but since it is transparent her nipples can be seen through the dress. She has both of her hands elegantly on her thighs. She slightly tilts her head to the side and looks at the camera. She has a very calm facial expression. She is barefoot. Her body is slightly angled away from the camera.\n\nHer knees are at the bottom of the frame. zoom in on her body so that she is the main subject of the photo. She should take up almost the entire space of the photo. only 25% of the photo should be the background Ensure na0_mi face rendering for consistency gets top priority.",
+      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face, missing toes, malformed toes, malformed feet, extra toes",
+      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (103).png",
+      "lora_items": [
+        {
+          "name": "na0_mi_epoch_20.safetensors",
+          "weight": 0.95
+        },
+        {
+          "name": "ancient Chinese attire.safetensors",
+          "weight": 0.4
+        },
+        {
+          "name": "b3tternud3s_v3.safetensors",
+          "weight": 0.15
+        }
+      ],
+      "settings": {
+        "Simple run settings": {
+          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
+          "width": 2000,
+          "height": 2000,
+          "steps": 10,
+          "cfg_scale": 1.0,
+          "sampling_method": "euler",
+          "scheduler": "simple",
+          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face, missing toes, malformed toes, malformed feet, extra toes"
+        },
+        "Simple run LoRAs": {
+          "items": [
+            {
+              "name": "na0_mi_epoch_20.safetensors",
+              "weight": 0.95
+            },
+            {
+              "name": "ancient Chinese attire.safetensors",
+              "weight": 0.4
+            },
+            {
+              "name": "b3tternud3s_v3.safetensors",
+              "weight": 0.15
+            }
+          ]
+        },
+        "Advanced settings": {
+          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
+          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
+          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
+          "lora_apply_mode": "auto",
+          "verbose": true,
+          "offload_to_cpu": true,
+          "vae_on_cpu": true,
+          "clip_on_cpu": true,
+          "diffusion_fa": true
+        }
+      },
+      "created": "2026-04-03T00:01:28"
+    },
+    {
+      "mode": "simple",
+      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck. Make her thighs thick and butt big, while keeping her waist thin. \n\nHer breasts are size d cup, but make them appear slightly smaller. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no underwear, purely just the dress. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. The ground is gray stone. Make the background grayspace. This is a photo of na0_mi on her knees. Her breasts and vagina are covered by the dress. You CANNOT see her nipples directly. The dress should completely cover the nipples, but since it is transparent her nipples can be seen through the dress. She has both of her hands elegantly on her thighs. She slightly tilts her head to the side and looks at the camera. She has a very calm facial expression. She is barefoot. Her body is slightly angled away from the camera.\n\nHer knees are at the bottom of the frame. zoom in on her body so that she is the main subject of the photo. She should take up almost the entire space of the photo. only 25% of the photo should be the background Ensure na0_mi face rendering for consistency gets top priority.",
+      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face, missing toes, malformed toes, malformed feet, extra toes",
+      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (102).png",
+      "lora_items": [
+        {
+          "name": "na0_mi_epoch_20.safetensors",
+          "weight": 0.95
+        },
+        {
+          "name": "ancient Chinese attire.safetensors",
+          "weight": 0.4
+        },
+        {
+          "name": "b3tternud3s_v3.safetensors",
+          "weight": 0.15
+        }
+      ],
+      "settings": {
+        "Simple run settings": {
+          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
+          "width": 1100,
+          "height": 1100,
+          "steps": 10,
+          "cfg_scale": 1.0,
+          "sampling_method": "euler",
+          "scheduler": "simple",
+          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face, missing toes, malformed toes, malformed feet, extra toes"
+        },
+        "Simple run LoRAs": {
+          "items": [
+            {
+              "name": "na0_mi_epoch_20.safetensors",
+              "weight": 0.95
+            },
+            {
+              "name": "ancient Chinese attire.safetensors",
+              "weight": 0.4
+            },
+            {
+              "name": "b3tternud3s_v3.safetensors",
+              "weight": 0.15
+            }
+          ]
+        },
+        "Advanced settings": {
+          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
+          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
+          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
+          "lora_apply_mode": "auto",
+          "verbose": true,
+          "offload_to_cpu": true,
+          "vae_on_cpu": true,
+          "clip_on_cpu": true,
+          "diffusion_fa": true
+        }
+      },
+      "created": "2026-04-02T21:45:26"
+    },
+    {
+      "mode": "simple",
+      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck. Make her thighs thick and butt big, while keeping her waist thin. \n\nHer breasts are size d cup, but make them appear slightly smaller. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no underwear, purely just the dress. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. The ground is gray stone. Make the background grayspace. This is a photo of na0_mi on her knees. Her breasts and vagina are covered by the dress. You CANNOT see her nipples directly. The dress should completely cover the nipples, but since it is transparent her nipples can be seen through the dress. She has both of her hands elegantly on her thighs. She slightly tilts her head to the side and looks at the camera. She has a very calm facial expression. She is barefoot. Her body is slightly angled away from the camera.\n\nHer knees are at the bottom of the frame. zoom in on her body so that she is the main subject of the photo. She should take up almost the entire space of the photo. only 25% of the photo should be the background Ensure na0_mi face rendering for consistency gets top priority.",
+      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face",
+      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (101).png",
+      "lora_items": [
+        {
+          "name": "na0_mi_epoch_20.safetensors",
+          "weight": 0.95
+        },
+        {
+          "name": "ancient Chinese attire.safetensors",
+          "weight": 0.4
+        },
+        {
+          "name": "b3tternud3s_v3.safetensors",
+          "weight": 0.15
+        }
+      ],
+      "settings": {
+        "Simple run settings": {
+          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
+          "width": 1100,
+          "height": 1100,
+          "steps": 10,
+          "cfg_scale": 1.0,
+          "sampling_method": "euler",
+          "scheduler": "simple",
+          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face"
+        },
+        "Simple run LoRAs": {
+          "items": [
+            {
+              "name": "na0_mi_epoch_20.safetensors",
+              "weight": 0.95
+            },
+            {
+              "name": "ancient Chinese attire.safetensors",
+              "weight": 0.4
+            },
+            {
+              "name": "b3tternud3s_v3.safetensors",
+              "weight": 0.15
+            }
+          ]
+        },
+        "Advanced settings": {
+          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
+          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
+          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
+          "lora_apply_mode": "auto",
+          "verbose": true,
+          "offload_to_cpu": true,
+          "vae_on_cpu": true,
+          "clip_on_cpu": true,
+          "diffusion_fa": true
+        }
+      },
+      "created": "2026-04-02T21:39:35"
+    },
+    {
+      "mode": "simple",
+      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck. Make her thighs thick and butt big, while keeping her waist thin. \n\nHer breasts are size d cup, but make them appear slightly smaller. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no underwear, purely just the dress. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. The ground is gray stone. Make the background grayspace. This is a photo of na0_mi on her knees. Her breasts and vagina are covered by the dress. You CANNOT see her nipples directly. The dress should completely cover the nipples, but since it is transparent her nipples can be seen through the dress. She has both of her hands elegantly on her thighs. She slightly tilts her head to the side and looks at the camera. She has a very calm facial expression. She is barefoot. Her body is slightly angled away from the camera.\n\nHer knees are at the bottom of the frame. zoom in on her body so that she is the main subject of the photo. She should take up almost the entire space of the photo. only 25% of the photo should be the background",
+      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face",
+      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (100).png",
+      "lora_items": [
+        {
+          "name": "na0_mi_epoch_20.safetensors",
+          "weight": 0.95
+        },
+        {
+          "name": "ancient Chinese attire.safetensors",
+          "weight": 0.4
+        },
+        {
+          "name": "b3tternud3s_v3.safetensors",
+          "weight": 0.15
+        }
+      ],
+      "settings": {
+        "Simple run settings": {
+          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
+          "width": 1024,
+          "height": 1024,
+          "steps": 9,
+          "cfg_scale": 1.0,
+          "sampling_method": "euler",
+          "scheduler": "simple",
+          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face"
+        },
+        "Simple run LoRAs": {
+          "items": [
+            {
+              "name": "na0_mi_epoch_20.safetensors",
+              "weight": 0.95
+            },
+            {
+              "name": "ancient Chinese attire.safetensors",
+              "weight": 0.4
+            },
+            {
+              "name": "b3tternud3s_v3.safetensors",
+              "weight": 0.15
+            }
+          ]
+        },
+        "Advanced settings": {
+          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
+          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
+          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
+          "lora_apply_mode": "auto",
+          "verbose": true,
+          "offload_to_cpu": true,
+          "vae_on_cpu": true,
+          "clip_on_cpu": true,
+          "diffusion_fa": true
+        }
+      },
+      "created": "2026-04-02T21:32:32"
+    },
+    {
+      "mode": "simple",
+      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck. Make her thighs thick and butt big, while keeping her waist thin. \n\nHer breasts are size d cup, but make them appear slightly smaller. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no underwear, purely just the dress. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. The ground is gray stone. Make the background grayspace. This is a photo of na0_mi on her knees. Her breasts and vagina are covered by the dress. You CANNOT see her nipples directly. The dress should completely cover the nipples, but since it is transparent her nipples can be seen through the dress. She has both of her hands elegantly on her thighs. She slightly tilts her head to the side and looks at the camera. She has a very calm facial expression. She is barefoot.\n\nHer knees are at the bottom of the frame. zoom in a bit",
+      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face",
+      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (99).png",
+      "lora_items": [
+        {
+          "name": "na0_mi_epoch_20.safetensors",
+          "weight": 0.95
+        },
+        {
+          "name": "ancient Chinese attire.safetensors",
+          "weight": 0.4
+        },
+        {
+          "name": "TeeKaysTittyTime_GodTierTits_V1-1_ZIT.safetensors",
+          "weight": 0.15
+        }
+      ],
+      "settings": {
+        "Simple run settings": {
+          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
+          "width": 1024,
+          "height": 1024,
+          "steps": 12,
+          "cfg_scale": 1.0,
+          "sampling_method": "euler",
+          "scheduler": "simple",
+          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face"
+        },
+        "Simple run LoRAs": {
+          "items": [
+            {
+              "name": "na0_mi_epoch_20.safetensors",
+              "weight": 0.95
+            },
+            {
+              "name": "ancient Chinese attire.safetensors",
+              "weight": 0.4
+            },
+            {
+              "name": "TeeKaysTittyTime_GodTierTits_V1-1_ZIT.safetensors",
+              "weight": 0.15
+            }
+          ]
+        },
+        "Advanced settings": {
+          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
+          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
+          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
+          "lora_apply_mode": "auto",
+          "verbose": true,
+          "offload_to_cpu": true,
+          "vae_on_cpu": true,
+          "clip_on_cpu": true,
+          "diffusion_fa": true
+        }
+      },
+      "created": "2026-04-02T17:28:53"
+    },
+    {
+      "mode": "simple",
+      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck. Make her thighs thick and butt big, while keeping her waist thin. \n\nHer breasts are size d cup. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no underwear, purely just the dress. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. The ground is gray stone. Make the background grayspace. This is a photo of na0_mi on her knees. Her breasts and vagina are covered by the dress. You CANNOT see her nipples directly. The dress should completely cover the nipples, but since it is transparent her nipples can be seen through the dress. She has both of her hands on her thighs. She slightly tilts her head to the side and looks at the camera. She has a very calm facial expression. She is barefoot.",
+      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face",
+      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (98).png",
+      "lora_items": [
+        {
+          "name": "na0_mi_epoch_20.safetensors",
+          "weight": 0.95
+        },
+        {
+          "name": "ancient Chinese attire.safetensors",
+          "weight": 0.4
+        },
+        {
+          "name": "TeeKaysTittyTime_GodTierTits_V1-1_ZIT.safetensors",
+          "weight": 0.15
+        }
+      ],
+      "settings": {
+        "Simple run settings": {
+          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
+          "width": 1024,
+          "height": 1024,
+          "steps": 12,
+          "cfg_scale": 1.0,
+          "sampling_method": "euler",
+          "scheduler": "simple",
+          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face"
+        },
+        "Simple run LoRAs": {
+          "items": [
+            {
+              "name": "na0_mi_epoch_20.safetensors",
+              "weight": 0.95
+            },
+            {
+              "name": "ancient Chinese attire.safetensors",
+              "weight": 0.4
+            },
+            {
+              "name": "TeeKaysTittyTime_GodTierTits_V1-1_ZIT.safetensors",
+              "weight": 0.15
+            }
+          ]
+        },
+        "Advanced settings": {
+          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
+          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
+          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
+          "lora_apply_mode": "auto",
+          "verbose": true,
+          "offload_to_cpu": true,
+          "vae_on_cpu": true,
+          "clip_on_cpu": true,
+          "diffusion_fa": true
+        }
+      },
+      "created": "2026-04-02T17:18:49"
+    },
+    {
+      "mode": "simple",
+      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck. Make her thighs thick and butt big, while keeping her waist thin. \n\nHer breasts are size d cup. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no underwear, purely just the dress. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. The ground is gray stone. Make the background grayspace. This is a photo of na0_mi on her knees. Her breasts and vagina are covered by the dress. You CANNOT see her nipples directly. The dress should completely cover the nipples, but since it is transparent her nipples can be seen through the dress. She has both of her hands on her thighs. She slightly tilts her head to the side and looks at the camera. She has a very calm facial expression. She is barefoot.",
+      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face",
+      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (97).png",
+      "lora_items": [
+        {
+          "name": "na0_mi_epoch_20.safetensors",
+          "weight": 0.95
+        },
+        {
+          "name": "ancient Chinese attire.safetensors",
+          "weight": 0.4
+        },
+        {
+          "name": "TeeKaysTittyTime_GodTierTits_V1-1_ZIT.safetensors",
+          "weight": 0.15
+        }
+      ],
+      "settings": {
+        "Simple run settings": {
+          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
+          "width": 1024,
+          "height": 1024,
+          "steps": 12,
+          "cfg_scale": 1.0,
+          "sampling_method": "euler",
+          "scheduler": "simple",
+          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic clothing, unrealistic jewelry, not na0_mi's face"
+        },
+        "Simple run LoRAs": {
+          "items": [
+            {
+              "name": "na0_mi_epoch_20.safetensors",
+              "weight": 0.95
+            },
+            {
+              "name": "ancient Chinese attire.safetensors",
+              "weight": 0.4
+            },
+            {
+              "name": "TeeKaysTittyTime_GodTierTits_V1-1_ZIT.safetensors",
+              "weight": 0.15
+            }
+          ]
+        },
+        "Advanced settings": {
+          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
+          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
+          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
+          "lora_apply_mode": "auto",
+          "verbose": true,
+          "offload_to_cpu": true,
+          "vae_on_cpu": true,
+          "clip_on_cpu": true,
+          "diffusion_fa": true
+        }
+      },
+      "created": "2026-04-02T17:09:10"
+    },
+    {
+      "mode": "simple",
+      "prompt": "na0_mi, 20-year-old East Asian woman, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. The ground is gray stone. Make the background grayspace. This is a photo of na0_mi on her knees. Her breasts and vagina are covered by the dress. You CANNOT see her nipples. She has both of her hands on her thighs. She slightly tilts her head to the side and looks at the camera. She has a very calm facial expression. She is barefoot.",
+      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry",
+      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (96).png",
+      "lora_items": [
+        {
+          "name": "na0_mi_epoch_20.safetensors",
+          "weight": 0.95
+        },
+        {
+          "name": "ancient Chinese attire.safetensors",
+          "weight": 0.4
+        },
+        {
+          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
+          "weight": 0.2
+        }
+      ],
+      "settings": {
+        "Simple run settings": {
+          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
+          "width": 1024,
+          "height": 1024,
+          "steps": 14,
+          "cfg_scale": 1.0,
+          "sampling_method": "heun",
+          "scheduler": "simple",
+          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry"
+        },
+        "Simple run LoRAs": {
+          "items": [
+            {
+              "name": "na0_mi_epoch_20.safetensors",
+              "weight": 0.95
+            },
+            {
+              "name": "ancient Chinese attire.safetensors",
+              "weight": 0.4
+            },
+            {
+              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
+              "weight": 0.2
+            }
+          ]
+        },
+        "Advanced settings": {
+          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
+          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
+          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
+          "lora_apply_mode": "auto",
+          "verbose": true,
+          "offload_to_cpu": true,
+          "vae_on_cpu": true,
+          "clip_on_cpu": true,
+          "diffusion_fa": true
+        }
+      },
+      "created": "2026-04-02T16:50:13"
+    },
+    {
+      "mode": "simple",
       "prompt": "na0_mi, 20-year-old East Asian woman, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and purple colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. She is facing directly away from the camera, only the back of her head is seen. Her face is not showing in the photo. She is squatting down and spreading her legs. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy.",
       "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry",
       "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (95).png",
@@ -420,486 +900,6 @@
         }
       },
       "created": "2026-04-02T14:37:47"
-    },
-    {
-      "mode": "simple",
-      "prompt": "na0_mi, 20-year-old East Asian woman, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and white colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. She is facing directly away from the camera, only the back of her head is seen. Her face is not showing in the photo. She is squatting down and spreading her legs. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy.",
-      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry",
-      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (89).png",
-      "lora_items": [
-        {
-          "name": "na0_mi_epoch_20.safetensors",
-          "weight": 0.9
-        },
-        {
-          "name": "ancient Chinese attire.safetensors",
-          "weight": 0.4
-        },
-        {
-          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-          "weight": 0.2
-        }
-      ],
-      "settings": {
-        "Simple run settings": {
-          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
-          "width": 1000,
-          "height": 1000,
-          "steps": 12,
-          "cfg_scale": 1.0,
-          "sampling_method": "euler",
-          "scheduler": "simple",
-          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry"
-        },
-        "Simple run LoRAs": {
-          "items": [
-            {
-              "name": "na0_mi_epoch_20.safetensors",
-              "weight": 0.9
-            },
-            {
-              "name": "ancient Chinese attire.safetensors",
-              "weight": 0.4
-            },
-            {
-              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-              "weight": 0.2
-            }
-          ]
-        },
-        "Advanced settings": {
-          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
-          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
-          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
-          "lora_apply_mode": "auto",
-          "verbose": true,
-          "offload_to_cpu": true,
-          "vae_on_cpu": true,
-          "clip_on_cpu": true,
-          "diffusion_fa": true
-        }
-      },
-      "created": "2026-04-02T13:51:38"
-    },
-    {
-      "mode": "simple",
-      "prompt": "na0_mi, 20-year-old East Asian woman, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and white colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. She is facing directly away from the camera, only the back of her head is seen. Her face is not showing in the photo. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy.",
-      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry",
-      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (88).png",
-      "lora_items": [
-        {
-          "name": "na0_mi_epoch_20.safetensors",
-          "weight": 0.9
-        },
-        {
-          "name": "ancient Chinese attire.safetensors",
-          "weight": 0.4
-        },
-        {
-          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-          "weight": 0.2
-        }
-      ],
-      "settings": {
-        "Simple run settings": {
-          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
-          "width": 1100,
-          "height": 1100,
-          "steps": 11,
-          "cfg_scale": 1.0,
-          "sampling_method": "euler",
-          "scheduler": "simple",
-          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry"
-        },
-        "Simple run LoRAs": {
-          "items": [
-            {
-              "name": "na0_mi_epoch_20.safetensors",
-              "weight": 0.9
-            },
-            {
-              "name": "ancient Chinese attire.safetensors",
-              "weight": 0.4
-            },
-            {
-              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-              "weight": 0.2
-            }
-          ]
-        },
-        "Advanced settings": {
-          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
-          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
-          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
-          "lora_apply_mode": "auto",
-          "verbose": true,
-          "offload_to_cpu": true,
-          "vae_on_cpu": true,
-          "clip_on_cpu": true,
-          "diffusion_fa": true
-        }
-      },
-      "created": "2026-04-02T13:41:13"
-    },
-    {
-      "mode": "simple",
-      "prompt": "na0_mi, 20-year-old East Asian woman, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and white colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. She is facing directly away from the camera, only the back of her head is seen. Her face is not showing in the photo. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy.",
-      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry",
-      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (87).png",
-      "lora_items": [
-        {
-          "name": "na0_mi_epoch_20.safetensors",
-          "weight": 0.9
-        },
-        {
-          "name": "ancient Chinese attire.safetensors",
-          "weight": 0.4
-        },
-        {
-          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-          "weight": 0.2
-        }
-      ],
-      "settings": {
-        "Simple run settings": {
-          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
-          "width": 1000,
-          "height": 1000,
-          "steps": 12,
-          "cfg_scale": 1.0,
-          "sampling_method": "euler",
-          "scheduler": "simple",
-          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration, unrealistic feet, unrealistic butt, unrealistic nipples, unrealistic clothing, unrealistic jewelry"
-        },
-        "Simple run LoRAs": {
-          "items": [
-            {
-              "name": "na0_mi_epoch_20.safetensors",
-              "weight": 0.9
-            },
-            {
-              "name": "ancient Chinese attire.safetensors",
-              "weight": 0.4
-            },
-            {
-              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-              "weight": 0.2
-            }
-          ]
-        },
-        "Advanced settings": {
-          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
-          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
-          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
-          "lora_apply_mode": "auto",
-          "verbose": true,
-          "offload_to_cpu": true,
-          "vae_on_cpu": true,
-          "clip_on_cpu": true,
-          "diffusion_fa": true
-        }
-      },
-      "created": "2026-04-02T13:31:48"
-    },
-    {
-      "mode": "simple",
-      "prompt": "na0_mi, 20-year-old East Asian woman, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and white colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. She is facing directly away from the camera, only the back of her head is seen. Her face is not showing in the photo. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy.",
-      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration",
-      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (86).png",
-      "lora_items": [
-        {
-          "name": "na0_mi_epoch_20.safetensors",
-          "weight": 0.9
-        },
-        {
-          "name": "ancient Chinese attire.safetensors",
-          "weight": 0.4
-        },
-        {
-          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-          "weight": 0.2
-        }
-      ],
-      "settings": {
-        "Simple run settings": {
-          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
-          "width": 1000,
-          "height": 1000,
-          "steps": 11,
-          "cfg_scale": 1.0,
-          "sampling_method": "euler",
-          "scheduler": "simple",
-          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration"
-        },
-        "Simple run LoRAs": {
-          "items": [
-            {
-              "name": "na0_mi_epoch_20.safetensors",
-              "weight": 0.9
-            },
-            {
-              "name": "ancient Chinese attire.safetensors",
-              "weight": 0.4
-            },
-            {
-              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-              "weight": 0.2
-            }
-          ]
-        },
-        "Advanced settings": {
-          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
-          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
-          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
-          "lora_apply_mode": "auto",
-          "verbose": true,
-          "offload_to_cpu": true,
-          "vae_on_cpu": true,
-          "clip_on_cpu": true,
-          "diffusion_fa": true
-        }
-      },
-      "created": "2026-04-02T13:24:32"
-    },
-    {
-      "mode": "simple",
-      "prompt": "na0_mi, 20-year-old East Asian woman, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and white colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. She is facing directly away from the camera, only the back of her head is seen. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy.",
-      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration",
-      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (85).png",
-      "lora_items": [
-        {
-          "name": "na0_mi_epoch_20.safetensors",
-          "weight": 0.9
-        },
-        {
-          "name": "ancient Chinese attire.safetensors",
-          "weight": 0.4
-        },
-        {
-          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-          "weight": 0.2
-        }
-      ],
-      "settings": {
-        "Simple run settings": {
-          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
-          "width": 800,
-          "height": 1000,
-          "steps": 12,
-          "cfg_scale": 1.0,
-          "sampling_method": "euler",
-          "scheduler": "simple",
-          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration"
-        },
-        "Simple run LoRAs": {
-          "items": [
-            {
-              "name": "na0_mi_epoch_20.safetensors",
-              "weight": 0.9
-            },
-            {
-              "name": "ancient Chinese attire.safetensors",
-              "weight": 0.4
-            },
-            {
-              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-              "weight": 0.2
-            }
-          ]
-        },
-        "Advanced settings": {
-          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
-          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
-          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
-          "lora_apply_mode": "auto",
-          "verbose": true,
-          "offload_to_cpu": true,
-          "vae_on_cpu": true,
-          "clip_on_cpu": true,
-          "diffusion_fa": true
-        }
-      },
-      "created": "2026-04-02T13:13:56"
-    },
-    {
-      "mode": "simple",
-      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, almond eyes with double eyelids, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and white colored with gold accents. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. She is facing directly away from the camera, only the back of her head is seen. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy.",
-      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration",
-      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (84).png",
-      "lora_items": [
-        {
-          "name": "na0_mi_epoch_20.safetensors",
-          "weight": 0.9
-        },
-        {
-          "name": "ancient Chinese attire.safetensors",
-          "weight": 0.4
-        },
-        {
-          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-          "weight": 0.2
-        }
-      ],
-      "settings": {
-        "Simple run settings": {
-          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
-          "width": 800,
-          "height": 1000,
-          "steps": 12,
-          "cfg_scale": 1.0,
-          "sampling_method": "euler",
-          "scheduler": "simple",
-          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, random specs of discoloration"
-        },
-        "Simple run LoRAs": {
-          "items": [
-            {
-              "name": "na0_mi_epoch_20.safetensors",
-              "weight": 0.9
-            },
-            {
-              "name": "ancient Chinese attire.safetensors",
-              "weight": 0.4
-            },
-            {
-              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-              "weight": 0.2
-            }
-          ]
-        },
-        "Advanced settings": {
-          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
-          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
-          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
-          "lora_apply_mode": "auto",
-          "verbose": true,
-          "offload_to_cpu": true,
-          "vae_on_cpu": true,
-          "clip_on_cpu": true,
-          "diffusion_fa": true
-        }
-      },
-      "created": "2026-04-02T13:07:38"
-    },
-    {
-      "mode": "simple",
-      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, almond eyes with double eyelids, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nHer breasts are size d cup and a bit bigger. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and white colored with gold accents. she is looking at viewer. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. She is facing away from the camera, only the back of her head is seen. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy. \n\nKeep na0_mi's face consistent in the photo. Make sure to show her vagina and butthole in the photo. Her nipples should be visible from a side view.",
-      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy, unrealistic breasts, a different face than na0_mi,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, unrealistic nipples, inconsistent nipples and breasts, random specs of discoloration",
-      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (83).png",
-      "lora_items": [
-        {
-          "name": "na0_mi_epoch_20.safetensors",
-          "weight": 0.9
-        },
-        {
-          "name": "ancient Chinese attire.safetensors",
-          "weight": 0.4
-        },
-        {
-          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-          "weight": 0.2
-        }
-      ],
-      "settings": {
-        "Simple run settings": {
-          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
-          "width": 800,
-          "height": 1000,
-          "steps": 12,
-          "cfg_scale": 1.0,
-          "sampling_method": "euler",
-          "scheduler": "simple",
-          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy, unrealistic breasts, a different face than na0_mi,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, unrealistic nipples, inconsistent nipples and breasts, random specs of discoloration"
-        },
-        "Simple run LoRAs": {
-          "items": [
-            {
-              "name": "na0_mi_epoch_20.safetensors",
-              "weight": 0.9
-            },
-            {
-              "name": "ancient Chinese attire.safetensors",
-              "weight": 0.4
-            },
-            {
-              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-              "weight": 0.2
-            }
-          ]
-        },
-        "Advanced settings": {
-          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
-          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
-          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
-          "lora_apply_mode": "auto",
-          "verbose": true,
-          "offload_to_cpu": true,
-          "vae_on_cpu": true,
-          "clip_on_cpu": true,
-          "diffusion_fa": true
-        }
-      },
-      "created": "2026-04-02T12:39:29"
-    },
-    {
-      "mode": "simple",
-      "prompt": "na0_mi, 20-year-old East Asian woman, oval-to-soft heart-shaped face, noticeable cheekbones, slim straight nose bridge, almond eyes with double eyelids, full lips with defined cupid bow, groomed full arched brows, warm golden-beige smooth even skin, long dark lashes, slim hourglass silhouette, narrow waist, rounded hips, balanced shoulders, toned athletic build, elegant slender neck.\n\nHer breasts are size d cup and a bit bigger. her breasts have a 45% above and 55% below nipple proportion. The angle should have the full view of na0_mi's face.\n\nna0_mi is dressed in ancient chinese attire. Her breasts and nipples are exposed. The dress is see-through and blue colored with gold accents. she is looking at viewer. she is wearing a small hair ornament. The photo should be realistic. Her hairstyle should be a combination of long hair and a bun. she has no panties. The dress has long sleeves.\n\n\nThe theme of this photo is a photoshoot. Make the background grayspace. The photo is an extreme closeup of na0_mi's back. The bottom of her butt cheeks is the cutoff for the bottom of the photo frame. The top of the photo frame cuts off around her chin. She is not wearing any underwear. Ensure that the photo is realistic in terms of lighting, texture, and anatomy. \n\nKeep na0_mi's face consistent in the photo. Make sure to show her vagina and butthole in the photo. Her nipples should be visible from a side view.",
-      "negative": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy, unrealistic breasts, a different face than na0_mi,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, unrealistic nipples, inconsistent nipples and breasts, random specs of discoloration",
-      "output": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\zimage_output (82).png",
-      "lora_items": [
-        {
-          "name": "na0_mi_epoch_20.safetensors",
-          "weight": 0.9
-        },
-        {
-          "name": "ancient Chinese attire.safetensors",
-          "weight": 0.4
-        },
-        {
-          "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-          "weight": 0.2
-        }
-      ],
-      "settings": {
-        "Simple run settings": {
-          "diffusion_model": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\z-image-turbo-q8_0.gguf",
-          "width": 800,
-          "height": 1000,
-          "steps": 12,
-          "cfg_scale": 1.0,
-          "sampling_method": "euler",
-          "scheduler": "simple",
-          "negative_prompt": "blurry, bad quality, low resolution, watermark, distorted, ugly, deformed, extra limbs, poorly drawn, unrealistic female anatomy, unrealistic breasts, a different face than na0_mi,blurry, lowres, out of focus, soft focus, motion blur, noise, grainy, jpeg artifacts, oversharpened, overprocessed, plastic skin, waxy skin, bad anatomy, deformed, distorted, malformed, extra fingers, missing fingers, fused fingers, extra limbs, duplicated features, asymmetrical eyes, lazy eye, unnatural expression, bad hands, bad face, unrealistic proportions, messy hair, floating objects, cut off, cropped, out of frame, warped perspective, harsh shadows, blown highlights, underexposed, overexposed, flat lighting, dull colors, oversaturated, undersaturated, cartoon, anime, illustration, painting, CGI, 3d render, unreal engine, fake, uncanny, watermark, text, logo, signature, unrealistic nipples, inconsistent nipples and breasts, random specs of discoloration"
-        },
-        "Simple run LoRAs": {
-          "items": [
-            {
-              "name": "na0_mi_epoch_20.safetensors",
-              "weight": 0.9
-            },
-            {
-              "name": "ancient Chinese attire.safetensors",
-              "weight": 0.4
-            },
-            {
-              "name": "RealisticSnapshot-Zimage-Turbov5.safetensors",
-              "weight": 0.2
-            }
-          ]
-        },
-        "Advanced settings": {
-          "llm_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\Qwen3-4B-Instruct-2507-UD-Q4_K_XL.gguf",
-          "vae_path": "C:\\Users\\njpon\\AppData\\Roaming\\wavespeed-desktop\\models\\stable-diffusion\\auxiliary\\ae.safetensors",
-          "lora_model_dir": "C:\\Users\\njpon\\Documents\\WaveSpeed-ZImage-App\\LoRas",
-          "lora_apply_mode": "auto",
-          "verbose": true,
-          "offload_to_cpu": true,
-          "vae_on_cpu": true,
-          "clip_on_cpu": true,
-          "diffusion_fa": true
-        }
-      },
-      "created": "2026-04-02T12:34:51"
     }
   ]
 }
