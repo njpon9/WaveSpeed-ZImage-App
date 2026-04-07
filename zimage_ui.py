@@ -3,12 +3,14 @@ Z-Image / sd.exe launcher GUI — scrollable options, JSON-backed run.
 """
 from __future__ import annotations
 
+import ctypes
 import json
 import os
 import subprocess
 import sys
 import tempfile
 import threading
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -147,6 +149,106 @@ def default_vae() -> str:
     return str(AUX_DIR / "ae.safetensors")
 
 
+def _win_build_children_map() -> dict[int, list[int]]:
+    """Map parent PID -> child PIDs from a process snapshot (Windows)."""
+    from ctypes import wintypes
+
+    TH32CS_SNAPPROCESS = 0x00000002
+    INVALID_HANDLE_VALUE = ctypes.c_void_p(-1).value
+
+    class PROCESSENTRY32(ctypes.Structure):
+        _fields_ = (
+            ("dwSize", wintypes.DWORD),
+            ("cntUsage", wintypes.DWORD),
+            ("th32ProcessID", wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.c_size_t),
+            ("th32ModuleID", wintypes.DWORD),
+            ("cntThreads", wintypes.DWORD),
+            ("th32ParentProcessID", wintypes.DWORD),
+            ("pcPriClassBase", wintypes.LONG),
+            ("dwFlags", wintypes.DWORD),
+            ("szExeFile", ctypes.c_char * 260),
+        )
+
+    k32 = ctypes.windll.kernel32
+    k32.CreateToolhelp32Snapshot.argtypes = (wintypes.DWORD, wintypes.DWORD)
+    k32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    k32.Process32First.argtypes = (wintypes.HANDLE, ctypes.POINTER(PROCESSENTRY32))
+    k32.Process32First.restype = wintypes.BOOL
+    k32.Process32Next.argtypes = (wintypes.HANDLE, ctypes.POINTER(PROCESSENTRY32))
+    k32.Process32Next.restype = wintypes.BOOL
+
+    snap = k32.CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
+    if snap == INVALID_HANDLE_VALUE:
+        return {}
+    children: dict[int, list[int]] = {}
+    try:
+        pe = PROCESSENTRY32()
+        pe.dwSize = ctypes.sizeof(PROCESSENTRY32)
+        if not k32.Process32First(snap, ctypes.byref(pe)):
+            return children
+        while True:
+            p, par = int(pe.th32ProcessID), int(pe.th32ParentProcessID)
+            if p:
+                children.setdefault(par, []).append(p)
+            if not k32.Process32Next(snap, ctypes.byref(pe)):
+                break
+    finally:
+        k32.CloseHandle(snap)
+    return children
+
+
+def _win_postorder_subtree(root: int, children: dict[int, list[int]]) -> list[int]:
+    """DFS post-order: leaves first, then parents (good suspend order)."""
+    out: list[int] = []
+    for c in children.get(root, []):
+        out.extend(_win_postorder_subtree(c, children))
+    out.append(root)
+    return out
+
+
+def _win_suspend_resume_pid(pid: int, *, suspend: bool) -> bool:
+    from ctypes import wintypes
+
+    PROCESS_SUSPEND_RESUME = 0x0800
+    k32 = ctypes.windll.kernel32
+    k32.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
+    k32.OpenProcess.restype = wintypes.HANDLE
+    k32.CloseHandle.argtypes = (wintypes.HANDLE,)
+    k32.CloseHandle.restype = wintypes.BOOL
+    ntdll = ctypes.windll.ntdll
+    if suspend:
+        fn = ntdll.NtSuspendProcess
+    else:
+        fn = ntdll.NtResumeProcess
+    fn.argtypes = (wintypes.HANDLE,)
+    fn.restype = ctypes.c_ulong
+    h = k32.OpenProcess(PROCESS_SUSPEND_RESUME, False, pid)
+    if not h:
+        return False
+    try:
+        return int(fn(h)) == 0
+    finally:
+        k32.CloseHandle(h)
+
+
+def _win_suspend_process_tree(root_pid: int) -> list[int]:
+    """Suspend root and all descendant processes; returns PIDs successfully suspended (post-order)."""
+    cmap = _win_build_children_map()
+    order = _win_postorder_subtree(root_pid, cmap)
+    done: list[int] = []
+    for pid in order:
+        if pid and _win_suspend_resume_pid(pid, suspend=True):
+            done.append(pid)
+    return done
+
+
+def _win_resume_process_tree(suspended_postorder: list[int]) -> None:
+    for pid in reversed(suspended_postorder):
+        if pid:
+            _win_suspend_resume_pid(pid, suspend=False)
+
+
 class App(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
@@ -156,6 +258,11 @@ class App(tk.Tk):
         self._proc: subprocess.Popen | None = None
         self._run_thread: threading.Thread | None = None
         self._stop_requested = threading.Event()
+        self._skip_requested = threading.Event()
+        self._paused = False
+        self._suspended_pids: list[int] = []
+        self._gen_queue: list[dict] = []
+        self._queue_lock = threading.Lock()
         self._active_phase = ""
         self._history: list[dict] = []
         self.lora_rows: list[dict] = []
@@ -175,7 +282,10 @@ class App(tk.Tk):
         self._edit_mask_temp_path = ""
         self._edit_mask_history: list[Image.Image] = []
         self._edit_mask_stroke_active = False
-        self._lora_presets: dict[str, dict[str, list[dict[str, float | str]]]] = {
+        # LoRA preset payloads are stored on disk and loaded back into the UI.
+        # Legacy format: list of {"name": str, "weight": float} (LoRA only).
+        # New format: dict snapshot containing full run settings.
+        self._lora_presets: dict[str, dict[str, object]] = {
             "simple": {},
             "edit": {},
             "second_pass": {},
@@ -241,8 +351,42 @@ class App(tk.Tk):
         self.run_btn.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(0, 6))
         self.stop_btn = ttk.Button(run_row, text="Stop", command=self.on_stop, state=tk.DISABLED)
         self.stop_btn.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(0, 6))
+        self.skip_btn = ttk.Button(run_row, text="Skip job", command=self.on_skip_current, state=tk.DISABLED)
+        self.skip_btn.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(0, 6))
+        self.pause_btn = ttk.Button(run_row, text="Pause", command=self.on_pause_resume, state=tk.DISABLED)
+        self.pause_btn.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(0, 6))
         self.help_btn = ttk.Button(run_row, text="Help", command=self.show_speed_help)
         self.help_btn.pack(side=tk.LEFT)
+
+        queue_fr = ttk.LabelFrame(left_outer, text="Generation queue", padding=6)
+        queue_fr.pack(fill=tk.X, pady=(10, 0))
+        qlist_wrap = ttk.Frame(queue_fr)
+        qlist_wrap.pack(fill=tk.BOTH, expand=True)
+        self.queue_tree = ttk.Treeview(
+            qlist_wrap,
+            columns=("summary",),
+            show="headings",
+            selectmode="browse",
+            height=8,
+        )
+        self.queue_tree.heading("summary", text="Prompt · LoRAs · settings · output")
+        self.queue_tree.column("summary", width=420, stretch=True, anchor="w")
+        sb_q = ttk.Scrollbar(qlist_wrap, orient="vertical", command=self.queue_tree.yview)
+        sb_qx = ttk.Scrollbar(queue_fr, orient="horizontal", command=self.queue_tree.xview)
+        self.queue_tree.configure(yscrollcommand=sb_q.set, xscrollcommand=sb_qx.set)
+        self.queue_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        sb_q.pack(side=tk.RIGHT, fill=tk.Y)
+        sb_qx.pack(fill=tk.X)
+        qbtn = ttk.Frame(queue_fr)
+        qbtn.pack(fill=tk.X, pady=(6, 0))
+        ttk.Button(qbtn, text="Add current", command=self.on_enqueue).pack(side=tk.LEFT, padx=(0, 6))
+        ttk.Button(qbtn, text="Remove", command=self.on_remove_queue_selection).pack(side=tk.LEFT, padx=(0, 6))
+        ttk.Button(qbtn, text="Clear queue", command=self.on_clear_queue).pack(side=tk.LEFT, padx=(0, 6))
+        ttk.Label(
+            qbtn,
+            text="Add joins the live queue; processing starts if idle.",
+            wraplength=300,
+        ).pack(side=tk.LEFT, padx=(8, 0))
 
         right = ttk.Frame(root)
         right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(12, 0))
@@ -1526,6 +1670,153 @@ class App(tk.Tk):
             self.remove_last_second_pass_lora_row,
         )
 
+    def _apply_options_to_ui(self, options: dict) -> None:
+        """
+        Best-effort restore of UI state from the dict created by _collect_options().
+        This is used by the enhanced LoRA presets (snapshot-based).
+        """
+        if not isinstance(options, dict):
+            return
+
+        def _as_int(v: object, default: int) -> int:
+            try:
+                return int(float(v))  # handles numeric or string
+            except (TypeError, ValueError):
+                return default
+
+        def _as_float(v: object, default: float) -> float:
+            try:
+                return float(v)
+            except (TypeError, ValueError):
+                return default
+
+        # Core run params
+        if "diffusion_model" in options:
+            dm = str(options.get("diffusion_model") or "").strip()
+            if dm:
+                self.model_path_var.set(dm)
+                for name, p in self._all_model_map.items():
+                    if p == dm:
+                        self.model_var.set(name)
+                        break
+
+        if "negative_prompt" in options:
+            self._set_text_widget(self.neg_prompt, str(options.get("negative_prompt") or ""))
+
+        if "width" in options:
+            self.width_var.set(_as_int(options.get("width"), self.width_var.get()))
+        if "height" in options:
+            self.height_var.set(_as_int(options.get("height"), self.height_var.get()))
+        if "steps" in options:
+            self.steps_var.set(_as_int(options.get("steps"), self.steps_var.get()))
+        if "cfg_scale" in options:
+            self.cfg_var.set(_as_float(options.get("cfg_scale"), float(self.cfg_var.get())))
+        if "sampling_method" in options:
+            self.sampling_var.set(str(options.get("sampling_method") or self.sampling_var.get()))
+        if "scheduler" in options:
+            self.scheduler_var.set(str(options.get("scheduler") or self.scheduler_var.get()))
+
+        if "seed" in options and options.get("seed") is not None:
+            seed_raw = str(options.get("seed") or "").strip()
+            if seed_raw:
+                try:
+                    self.seed_var.set(str(int(float(seed_raw))))
+                except (TypeError, ValueError):
+                    self.seed_var.set(seed_raw)
+            else:
+                self.seed_var.set("")
+        else:
+            # If seed wasn't present in the snapshot, it means “unset” in the UI.
+            self.seed_var.set("")
+
+        # High-noise sampling method (advanced sampling)
+        if "high_noise_sampling_method" in options:
+            self.high_noise_sampling_var.set(str(options.get("high_noise_sampling_method") or ""))
+        else:
+            self.high_noise_sampling_var.set("")
+
+        # VRAM / CPU toggles
+        self.low_vram.set(bool(options.get("clip_on_cpu")) or bool(options.get("vae_on_cpu")))
+        self.vae_tiling.set(bool(options.get("vae_tiling")))
+
+        # Logging
+        self.verbose_var.set(bool(options.get("verbose")))
+        self.color_log_var.set(bool(options.get("color_log")))
+
+        # img2img init image + strength
+        init_img = options.get("init_img")
+        if init_img:
+            self.img2img_enabled.set(True)
+            self.init_img_var.set(str(init_img))
+            if "strength" in options:
+                self.strength_var.set(_as_float(options.get("strength"), float(self.strength_var.get())))
+        else:
+            self.img2img_enabled.set(False)
+
+        # Reference images (Advanced: -r)
+        refs = options.get("ref_images")
+        if isinstance(refs, list):
+            refs_txt = "\n".join(str(r) for r in refs if str(r).strip())
+            self.ref_images_txt.delete("1.0", "end")
+            self.ref_images_txt.insert("1.0", refs_txt)
+        else:
+            self.ref_images_txt.delete("1.0", "end")
+
+        # Apply the remaining advanced string/bool options.
+        # (Many of these are only included in the options dict if they are set.)
+        for key, var in self._str_opts.items():
+            if key in options and options.get(key) is not None:
+                var.set(str(options.get(key)))
+            else:
+                # Missing keys mean the value was empty/unset in the snapshot.
+                var.set("")
+
+        for key, var in self._bool_opts.items():
+            var.set(bool(options.get(key, False)))
+
+    def _base_run_preset_payload(self) -> dict:
+        """Snapshot the entire Simple-run UI state needed to rebuild build_config()."""
+        return {
+            "sd_exe": self.sd_exe_var.get().strip(),
+            "output": self.out_var.get().strip(),
+            "embed_metadata": bool(self.embed_metadata_var.get()),
+            "prompt": self.prompt.get("1.0", "end").strip(),
+            "lora_items": self._collect_lora_snapshot(self.lora_rows),
+            "options": self._collect_options(),
+        }
+
+    def _apply_base_run_preset_payload(self, payload: dict) -> None:
+        if not isinstance(payload, dict):
+            return
+
+        if "sd_exe" in payload:
+            self.sd_exe_var.set(str(payload.get("sd_exe") or "").strip())
+
+        if "output" in payload:
+            self.out_var.set(str(payload.get("output") or "").strip())
+
+        if "embed_metadata" in payload:
+            self.embed_metadata_var.set(bool(payload.get("embed_metadata")))
+
+        prompt = payload.get("prompt")
+        if isinstance(prompt, str):
+            self._set_text_widget(self.prompt, prompt)
+
+        options = payload.get("options")
+        if isinstance(options, dict):
+            self._apply_options_to_ui(options)
+
+        lora_items = payload.get("lora_items")
+        if isinstance(lora_items, list):
+            self._apply_lora_snapshot(
+                lora_items,
+                self.lora_rows,
+                self.add_lora_row,
+                self.remove_last_lora_row,
+            )
+
+        # Second pass is handled by the caller (it may not exist in some payloads).
+
     def _load_lora_presets(self) -> None:
         self._lora_presets = {"simple": {}, "edit": {}, "second_pass": {}}
         if not LORA_PRESETS_PATH.exists():
@@ -1541,13 +1832,13 @@ class App(tk.Tk):
             if not isinstance(tab_val, dict):
                 continue
             # Preserve only valid preset payloads
-            cleaned: dict[str, list[dict]] = {}
+            cleaned: dict[str, object] = {}
             for preset_name, items in tab_val.items():
                 if not isinstance(preset_name, str):
                     continue
-                if not isinstance(items, list):
-                    continue
-                cleaned[preset_name] = items
+                # Accept both legacy list payloads and new dict snapshot payloads.
+                if isinstance(items, (list, dict)):
+                    cleaned[preset_name] = items
             self._lora_presets[tab_key] = cleaned
         self._refresh_lora_preset_ui()
 
@@ -1591,9 +1882,20 @@ class App(tk.Tk):
             if show_message:
                 messagebox.showerror("LoRA preset", "Enter a preset name first.")
             return
-        row_list = ui.get("row_list") if isinstance(ui.get("row_list"), list) else []
-        items = self._collect_lora_snapshot(row_list)
-        self._lora_presets.setdefault(tab_key, {})[preset_name] = items
+
+        # Enhanced behavior: save full run settings (not just LoRA items)
+        # for the Simple-run and Second-pass LoRA preset pickers.
+        if tab_key in {"simple", "second_pass"}:
+            base_payload = self._base_run_preset_payload()
+            second_pass_payload = self._second_pass_preset_payload()
+            payload = {"version": 1, "base": base_payload, "second_pass": second_pass_payload}
+            self._lora_presets.setdefault(tab_key, {})[preset_name] = payload
+        else:
+            # Legacy behavior for Image edit LoRA presets: keep it LoRA-only.
+            row_list = ui.get("row_list") if isinstance(ui.get("row_list"), list) else []
+            lora_items = self._collect_lora_snapshot(row_list)
+            self._lora_presets.setdefault(tab_key, {})[preset_name] = lora_items
+
         self._persist_lora_presets()
         self._refresh_lora_preset_ui()
         preset_var = ui.get("preset_var")
@@ -1615,6 +1917,20 @@ class App(tk.Tk):
                 messagebox.showerror("LoRA preset", "Select a preset to load.")
             return
         items = self._lora_presets.get(tab_key, {}).get(preset_name)
+
+        # New snapshot payload
+        if isinstance(items, dict) and tab_key in {"simple", "second_pass"}:
+            base = items.get("base")
+            if isinstance(base, dict):
+                self._apply_base_run_preset_payload(base)
+            sp = items.get("second_pass")
+            if isinstance(sp, dict):
+                self._apply_second_pass_snapshot(sp)
+            if show_message:
+                messagebox.showinfo("LoRA preset", f"Loaded preset '{preset_name}'.")
+            return
+
+        # Legacy payload (LoRA-only)
         if not isinstance(items, list):
             if show_message:
                 messagebox.showerror("LoRA preset", f"Preset not found: {preset_name}")
@@ -1625,6 +1941,8 @@ class App(tk.Tk):
         if not isinstance(row_list, list) or add_fn is None or remove_fn is None:
             return
         self._apply_lora_snapshot(items, row_list, add_fn, remove_fn)
+        if show_message:
+            messagebox.showinfo("LoRA preset", f"Loaded preset '{preset_name}' (LoRA-only).")
 
     def _persist_history(self) -> None:
         try:
@@ -1797,6 +2115,32 @@ class App(tk.Tk):
         except OSError as ex:
             messagebox.showerror("Open", str(ex))
 
+    def on_pause_resume(self) -> None:
+        if sys.platform != "win32":
+            messagebox.showinfo("Pause", "Pause and resume are only available on Windows.")
+            return
+        proc = self._proc
+        if not proc or proc.poll() is not None:
+            return
+        if not self._paused:
+            suspended = _win_suspend_process_tree(proc.pid)
+            if not suspended:
+                self.append_log("[WARN] Pause: could not suspend the run (access denied or no child PIDs).\n")
+                return
+            self._suspended_pids = suspended
+            self._paused = True
+            self.pause_btn.configure(text="Resume")
+            self.append_log("[INFO] Paused (launcher and sd.exe process tree suspended).\n")
+            self.status.set("Paused.")
+        else:
+            _win_resume_process_tree(self._suspended_pids)
+            self._suspended_pids.clear()
+            self._paused = False
+            self.pause_btn.configure(text="Pause")
+            self.append_log("[INFO] Resumed.\n")
+            phase = self._active_phase or "generation"
+            self.status.set(f"Running {phase}…")
+
     def _kill_proc_tree(self, proc: subprocess.Popen) -> None:
         if proc.poll() is not None:
             return
@@ -1928,16 +2272,34 @@ class App(tk.Tk):
         self.strength_var.set(v)
         self.strength_lbl.set(f"{v:.2f}")
 
-    def unique_output_path(self, p: str) -> str:
+    def _output_path_key(self, p: str) -> str:
+        path = Path(p).expanduser()
+        try:
+            return str(path.resolve())
+        except OSError:
+            return str(path)
+
+    def unique_output_path(self, p: str, reserved: set[str] | frozenset[str] | None = None) -> str:
+        """
+        Pick a writable output path. Bumps `name (1).ext`, `name (2).ext`, … when the file
+        already exists **or** the path is reserved (e.g. another queued job).
+        """
+        res: set[str] = set(reserved) if reserved else set()
         target = Path(p).expanduser()
         if target.suffix == "":
             target = target.with_suffix(".png")
-        if not target.exists():
+
+        def taken(cand: Path) -> bool:
+            if cand.exists():
+                return True
+            return self._output_path_key(str(cand)) in res
+
+        if not taken(target):
             return str(target)
         i = 1
         while True:
             cand = target.with_name(f"{target.stem} ({i}){target.suffix}")
-            if not cand.exists():
+            if not taken(cand):
                 return str(cand)
             i += 1
 
@@ -2381,12 +2743,35 @@ class App(tk.Tk):
             "options": opts,
         }
 
-    def second_pass_output_path(self, p: str) -> str:
+    def second_pass_output_path(self, p: str, reserved: set[str] | frozenset[str] | None = None) -> str:
         target = Path(p).expanduser()
         suffix = self.second_pass_suffix_var.get().strip() or "_pass2"
         if target.suffix == "":
             target = target.with_suffix(".png")
-        return self.unique_output_path(str(target.with_name(f"{target.stem}{suffix}{target.suffix}")))
+        return self.unique_output_path(
+            str(target.with_name(f"{target.stem}{suffix}{target.suffix}")),
+            reserved=reserved,
+        )
+
+    def _reserved_output_paths_from_queue(self) -> set[str]:
+        """Normalized paths already claimed by queued jobs (base + second pass)."""
+        keys: set[str] = set()
+        with self._queue_lock:
+            jobs = list(self._gen_queue)
+        for job in jobs:
+            cfg = job.get("cfg")
+            if isinstance(cfg, dict):
+                o = cfg.get("output")
+                if o:
+                    keys.add(self._output_path_key(str(o)))
+            sp = job.get("second_pass")
+            if isinstance(sp, dict):
+                sc = sp.get("second_cfg")
+                if isinstance(sc, dict):
+                    o2 = sc.get("output")
+                    if o2:
+                        keys.add(self._output_path_key(str(o2)))
+        return keys
 
     def _run_config(self, cfg: dict, *, step_label: str, use_i2: bool, init_src: str = "", strength: float = 0.0) -> int:
         tmp_path: str | None = None
@@ -2404,7 +2789,15 @@ class App(tk.Tk):
             else:
                 self.append_log("[INFO] Mode: text-to-image\n")
             self.append_log(f"[INFO] Output: {out}\n")
-            self._proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+            self._proc = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                bufsize=1,
+            )
             assert self._proc.stdout is not None
             for line in self._proc.stdout:
                 self.append_log(line if line.endswith("\n") else f"{line}\n")
@@ -2419,70 +2812,165 @@ class App(tk.Tk):
                 except OSError:
                     pass
 
-    def on_stop(self) -> None:
-        self._stop_requested.set()
-        if self._proc and self._proc.poll() is None:
-            self.append_log("[INFO] Stop: forcing subprocess tree to exit (hard stop)…\n")
-            self._kill_proc_tree(self._proc)
-        self.run_btn.config(state=tk.NORMAL)
-        self.stop_btn.config(state=tk.DISABLED)
-        self.status.set(f"Stopped during {self._active_phase}." if self._active_phase else "Stopped.")
+    @staticmethod
+    def _compact_lora_items(items: object, *, max_parts: int = 4) -> str:
+        if not isinstance(items, list) or not items:
+            return "—"
+        parts: list[str] = []
+        for raw in items[:max_parts]:
+            if not isinstance(raw, dict):
+                continue
+            try:
+                w = float(raw.get("weight", 0))
+            except (TypeError, ValueError):
+                w = 0.0
+            if w == 0:
+                continue
+            path = raw.get("path") or raw.get("name") or ""
+            if path:
+                stem = Path(str(path)).stem
+            else:
+                stem = str(raw.get("name") or "?")
+            if len(stem) > 14:
+                stem = stem[:13] + "…"
+            parts.append(f"{stem}@{w:.2g}")
+        tail = ""
+        if isinstance(items, list) and len(items) > max_parts:
+            tail = f"+{len(items) - max_parts}"
+        return "+".join(parts) + tail if parts else "—"
 
-    def on_run(self) -> None:
+    def _queue_job_summary_line(self, job: dict, index: int | None = None) -> str:
+        """One-line summary for the queue display and logs."""
+        hs = job.get("history_snapshot") if isinstance(job.get("history_snapshot"), dict) else {}
+        full_prompt = str(hs.get("prompt") or "")
+        prompt40 = full_prompt[:40]
+        ell = "…" if len(full_prompt) > 40 else ""
+
+        cfg = job.get("cfg") if isinstance(job.get("cfg"), dict) else {}
+        opts = cfg.get("options") if isinstance(cfg.get("options"), dict) else {}
+
+        mode = job.get("mode") or "simple"
+        if mode == "edit":
+            tag = "EDIT"
+            settings = hs.get("settings") if isinstance(hs.get("settings"), dict) else {}
+            ed = settings.get("Image edit settings") if isinstance(settings.get("Image edit settings"), dict) else {}
+            wm = str(ed.get("workflow_mode") or "")
+            tag += "+mask" if wm == "masked" else "+whole"
+        else:
+            tag = "SIMPLE"
+
+        lora_s = self._compact_lora_items(cfg.get("lora_items"))
+
+        w, h = opts.get("width"), opts.get("height")
+        geom = f"{w}×{h}" if w and h else "?×?"
+        steps = opts.get("steps", "?")
+        cfg_sc = opts.get("cfg_scale", "?")
+        try:
+            st_s = f"{float(job.get('strength', 0)):g}"
+        except (TypeError, ValueError):
+            st_s = "?"
+        seed = opts.get("seed")
+        seed_s = str(seed) if seed is not None and str(seed) != "" else "—"
+
+        init_img = opts.get("init_img") or job.get("init_src")
+        i2 = "i2i" if init_img else "t2i"
+
+        dm = opts.get("diffusion_model") or ""
+        if dm:
+            mod_name = Path(str(dm)).name
+            if len(mod_name) > 22:
+                mod_name = mod_name[:21] + "…"
+        else:
+            mod_name = "—"
+
+        out = Path(str(cfg.get("output") or "")).name or "?"
+
+        tun = f"{geom} s{steps} cfg{cfg_sc} str{st_s} @{seed_s} {i2}"
+        if "img_cfg_scale" in opts and opts.get("img_cfg_scale") is not None:
+            try:
+                tun += f" imgCfg{float(opts['img_cfg_scale']):g}"
+            except (TypeError, ValueError):
+                pass
+
+        chunks = [
+            (f"#{index}" if index is not None else None),
+            tag,
+            f'"{prompt40}{ell}"',
+            f"LoRA:{lora_s}",
+            tun,
+            mod_name,
+            out,
+        ]
+        sp = job.get("second_pass")
+        if isinstance(sp, dict):
+            sc = sp.get("second_cfg") if isinstance(sp.get("second_cfg"), dict) else {}
+            sco = sc.get("options") if isinstance(sc.get("options"), dict) else {}
+            l2 = self._compact_lora_items(sc.get("lora_items"))
+            try:
+                p2str = f"{float(sp.get('pass2_strength')):g}"
+            except (TypeError, ValueError):
+                p2str = "?"
+            chunks.append(
+                f"2nd: LoRA:{l2} s{sco.get('steps', '?')} cfg{sco.get('cfg_scale', '?')} str{p2str}"
+            )
+
+        return " | ".join(c for c in chunks if c)
+
+    def _refresh_queue_display(self) -> None:
+        for row in self.queue_tree.get_children():
+            self.queue_tree.delete(row)
+        with self._queue_lock:
+            snapshot = list(self._gen_queue)
+        for i, j in enumerate(snapshot):
+            self.queue_tree.insert("", tk.END, iid=str(i), values=(self._queue_job_summary_line(j, i + 1),))
+
+    def _validate_generation_prereqs(self) -> tuple[bool, str | None]:
         active_tab = str(self.left_notebook.select())
         is_edit_tab = active_tab == str(self.tab_edit)
         prompt = self.prompt.get("1.0", "end").strip()
         if not is_edit_tab and not prompt:
-            messagebox.showerror("Missing prompt", "Please enter a prompt.")
-            return
+            return is_edit_tab, "Please enter a prompt."
         if is_edit_tab:
             ep = self.edit_prompt.get("1.0", "end").strip()
             if not ep:
-                messagebox.showerror("Missing prompt", "Please enter an edit prompt.")
-                return
+                return is_edit_tab, "Please enter an edit prompt."
             if self.edit_refs_list.size() == 0:
-                messagebox.showerror("Missing photos", "Add at least one reference photo in Image edit.")
-                return
+                return is_edit_tab, "Add at least one reference photo in Image edit."
             req_error = self._validate_edit_model_requirements()
             if req_error:
-                messagebox.showerror("Image edit requirements", req_error)
-                return
-
-        out = self.out_var.get().strip()
-        if not out:
-            messagebox.showerror("Missing output path", "Please choose where to save output.")
-            return
-        out = self.unique_output_path(out)
-
+                return is_edit_tab, req_error
+        if not self.out_var.get().strip():
+            return is_edit_tab, "Please choose where to save output."
         seed = self.seed_var.get().strip()
         if seed:
             try:
                 int(seed)
             except ValueError:
-                messagebox.showerror("Invalid seed", "Seed must be an integer.")
-                return
+                return is_edit_tab, "Seed must be an integer."
         if is_edit_tab:
             edit_seed = self.edit_seed_var.get().strip()
             if edit_seed:
                 try:
                     int(edit_seed)
                 except ValueError:
-                    messagebox.showerror("Invalid edit seed", "Edit seed must be an integer.")
-                    return
-
+                    return is_edit_tab, "Edit seed must be an integer."
         if (not is_edit_tab) and self.img2img_enabled.get():
-            init_img = self.init_img_var.get().strip()
-            if not init_img:
-                messagebox.showerror("Image-to-image", "Enable init image mode requires a file path.")
-                return
+            if not self.init_img_var.get().strip():
+                return is_edit_tab, "Enable init image mode requires a file path."
         if (not is_edit_tab) and self.second_pass_enabled.get():
-            sp_prompt = self.second_pass_prompt.get("1.0", "end").strip()
-            if not sp_prompt:
-                messagebox.showerror("Second pass", "Please enter a second-pass prompt or disable automated second pass.")
-                return
+            if not self.second_pass_prompt.get("1.0", "end").strip():
+                return is_edit_tab, "Please enter a second-pass prompt or disable automated second pass."
+        return is_edit_tab, None
 
-        cfg = self.build_edit_config(out) if is_edit_tab else self.build_config(out, prompt)
-
+    def _build_generation_job(
+        self,
+        *,
+        is_edit_tab: bool,
+        out: str,
+        prompt_simple: str,
+        reserved_outputs: set[str] | None = None,
+    ) -> dict:
+        cfg = self.build_edit_config(out) if is_edit_tab else self.build_config(out, prompt_simple)
         if is_edit_tab:
             history_snapshot: dict = {
                 "mode": "edit",
@@ -2493,107 +2981,300 @@ class App(tk.Tk):
                 "lora_items": self._collect_lora_snapshot(self.edit_lora_rows),
                 "settings": self._history_edit_settings(cfg),
             }
+            use_i2 = True
+            init_src = self.edit_refs_list.get(0)
+            strength = float(self.edit_strength.get())
         else:
             history_snapshot = {
                 "mode": "simple",
-                "prompt": prompt,
+                "prompt": prompt_simple,
                 "negative": self.neg_prompt.get("1.0", "end").strip(),
                 "output": out,
                 "lora_items": self._collect_active_loras_for_history(),
                 "settings": self._history_simple_settings(cfg),
             }
+            use_i2 = bool(self.img2img_enabled.get())
+            init_src = self.init_img_var.get().strip()
+            strength = float(self.strength_var.get())
 
-        self.log.delete("1.0", "end")
+        second_pass = None
+        if not is_edit_tab and bool(self.second_pass_enabled.get()):
+            busy_second = set(reserved_outputs) if reserved_outputs else set()
+            busy_second.add(self._output_path_key(out))
+            second_out = self.second_pass_output_path(out, reserved=busy_second)
+            second_cfg = self.build_second_pass_config(second_out, out, cfg)
+            second_history = {
+                "mode": "second_pass",
+                "enabled": bool(self.second_pass_enabled.get()),
+                "inherit_base_settings": bool(self.second_pass_inherit_base_settings.get()),
+                "prompt": self.second_pass_prompt.get("1.0", "end").strip(),
+                "negative": self.second_pass_negative.get("1.0", "end").strip(),
+                "output": second_out,
+                "ref_images": [out],
+                "lora_items": self._collect_lora_snapshot(self.second_pass_lora_rows),
+                "model": (
+                    self.model_var.get().strip()
+                    if self.second_pass_inherit_base_settings.get()
+                    else self.second_pass_model_var.get().strip()
+                ),
+                "suffix": self.second_pass_suffix_var.get().strip(),
+                "width": int((second_cfg.get("options") or {}).get("width", self.second_pass_width.get())),
+                "height": int((second_cfg.get("options") or {}).get("height", self.second_pass_height.get())),
+                "steps": int((second_cfg.get("options") or {}).get("steps", self.second_pass_steps.get())),
+                "cfg_scale": float((second_cfg.get("options") or {}).get("cfg_scale", self.second_pass_cfg.get())),
+                "sampling_method": str((second_cfg.get("options") or {}).get("sampling_method", self.second_pass_sampling.get())),
+                "scheduler": str((second_cfg.get("options") or {}).get("scheduler", self.second_pass_scheduler.get())),
+                "strength": float(self.second_pass_strength.get()),
+                "settings": self._history_second_pass_settings(second_cfg),
+            }
+            second_pass = {
+                "second_cfg": second_cfg,
+                "second_history": second_history,
+                "pass2_strength": float(self.second_pass_strength.get()),
+            }
+
+        return {
+            "_qid": time.monotonic_ns(),
+            "mode": "edit" if is_edit_tab else "simple",
+            "cfg": cfg,
+            "history_snapshot": history_snapshot,
+            "use_i2": use_i2,
+            "init_src": init_src,
+            "strength": strength,
+            "embed_metadata": bool(self.embed_metadata_var.get()),
+            "second_pass": second_pass,
+        }
+
+    def _execute_generation_job(self, job: dict) -> None:
+        cfg = job["cfg"]
+        out = str(cfg.get("output") or "")
+        is_edit = job["mode"] == "edit"
+        use_i2 = bool(job["use_i2"])
+        init_src = str(job.get("init_src") or "")
+        strength = float(job.get("strength") or 0.0)
+        hs = job["history_snapshot"]
+        embed = bool(job.get("embed_metadata", True))
+        sp = job.get("second_pass")
+        has_second = isinstance(sp, dict)
+
+        step1 = (
+            "Step 1/1 - image edit"
+            if is_edit
+            else ("Step 1/2 - base generation" if has_second else "Step 1/1 - base generation")
+        )
+        rc = self._run_config(
+            cfg,
+            step_label=step1,
+            use_i2=use_i2,
+            init_src=init_src,
+            strength=strength,
+        )
+        base_exists = Path(out).expanduser().exists()
+
+        if self._stop_requested.is_set():
+            self.status.set("Stopped.")
+            return
+
+        if self._skip_requested.is_set():
+            self._skip_requested.clear()
+            self.append_log("[INFO] Current job skipped (after pass 1).\n")
+            self.status.set("Skipped; next queue item…")
+            return
+
+        if rc == 0 and base_exists:
+            hist = {**hs, "created": datetime.now().isoformat(timespec="seconds")}
+            if embed:
+                self._embed_metadata_into_image(out, hist)
+            self.after(0, lambda h=hist: self._append_history(h))
+
+        if is_edit or not has_second:
+            self.status.set(f"Done (exit {rc}).")
+            return
+
+        if rc != 0 or not base_exists:
+            self.status.set(f"Done (exit {rc}).")
+            return
+
+        if self._skip_requested.is_set():
+            self._skip_requested.clear()
+            self.append_log("[INFO] Skipped before second pass.\n")
+            self.status.set("Skipped; next queue item…")
+            return
+
+        second_cfg = sp["second_cfg"]
+        second_history = sp["second_history"]
+        pass2_strength = float(sp.get("pass2_strength", 0.35))
+        second_out = str(second_cfg.get("output") or "")
+
+        rc2 = self._run_config(
+            second_cfg,
+            step_label="Step 2/2 - automated second pass",
+            use_i2=True,
+            init_src=out,
+            strength=pass2_strength,
+        )
+
+        if self._stop_requested.is_set():
+            self.status.set("Stopped.")
+            return
+
+        if self._skip_requested.is_set():
+            self._skip_requested.clear()
+            self.append_log("[INFO] Skipped during second pass.\n")
+            self.status.set("Skipped; next queue item…")
+            return
+
+        if rc2 == 0 and Path(second_out).expanduser().exists():
+            hist2 = {**second_history, "created": datetime.now().isoformat(timespec="seconds")}
+            if embed:
+                self._embed_metadata_into_image(second_out, hist2)
+            self.after(0, lambda h=hist2: self._append_history(h))
+        self.status.set(f"Done (pass 2 exit {rc2}).")
+
+    def _begin_queue_session_ui(self) -> None:
         self.status.set("Running…")
         self.run_btn.config(state=tk.DISABLED)
         self.stop_btn.config(state=tk.NORMAL)
-        self._stop_requested.clear()
+        self.skip_btn.config(state=tk.NORMAL)
+        self.pause_btn.configure(
+            text="Pause",
+            state=(tk.NORMAL if sys.platform == "win32" else tk.DISABLED),
+        )
+        self._paused = False
+        self._suspended_pids.clear()
         self._active_phase = ""
 
-        def worker() -> None:
-            try:
-                use_i2 = bool(self.img2img_enabled.get()) or is_edit_tab
-                if is_edit_tab:
-                    init_src = self.edit_refs_list.get(0)
-                    strength = float(self.edit_strength.get())
-                else:
-                    init_src = self.init_img_var.get().strip()
-                    strength = float(self.strength_var.get())
-
-                rc = self._run_config(
-                    cfg,
-                    step_label=(
-                        "Step 1/1 - image edit"
-                        if is_edit_tab
-                        else ("Step 1/2 - base generation" if self.second_pass_enabled.get() else "Step 1/1 - base generation")
-                    ),
-                    use_i2=use_i2,
-                    init_src=init_src,
-                    strength=strength,
+    def _queue_worker_loop(self) -> None:
+        processed = 0
+        try:
+            while True:
+                with self._queue_lock:
+                    if self._stop_requested.is_set():
+                        break
+                    if not self._gen_queue:
+                        break
+                    job = self._gen_queue.pop(0)
+                processed += 1
+                self.after(0, self._refresh_queue_display)
+                with self._queue_lock:
+                    n_pending = len(self._gen_queue)
+                self.append_log(
+                    f"\n[INFO] === Active job #{processed}: "
+                    f"{self._queue_job_summary_line(job, processed)} | {n_pending} waiting ===\n"
                 )
-                base_exists = Path(out).expanduser().exists()
-                if rc == 0 and base_exists:
-                    hist = {**history_snapshot, "created": datetime.now().isoformat(timespec="seconds")}
-                    if bool(self.embed_metadata_var.get()):
-                        self._embed_metadata_into_image(out, hist)
-                    self.after(0, lambda h=hist: self._append_history(h))
-                auto_second_pass = (not is_edit_tab) and bool(self.second_pass_enabled.get())
-                if self._stop_requested.is_set() or not auto_second_pass or rc != 0 or not base_exists:
-                    self.status.set("Stopped." if self._stop_requested.is_set() else f"Done (exit {rc}).")
-                    return
-
-                second_out = self.second_pass_output_path(out)
-                second_cfg = self.build_second_pass_config(second_out, out, cfg)
-                second_history = {
-                    "mode": "second_pass",
-                    "enabled": bool(self.second_pass_enabled.get()),
-                    "inherit_base_settings": bool(self.second_pass_inherit_base_settings.get()),
-                    "prompt": self.second_pass_prompt.get("1.0", "end").strip(),
-                    "negative": self.second_pass_negative.get("1.0", "end").strip(),
-                    "output": second_out,
-                    "ref_images": [out],
-                    "lora_items": self._collect_lora_snapshot(self.second_pass_lora_rows),
-                    "model": (
-                        self.model_var.get().strip()
-                        if self.second_pass_inherit_base_settings.get()
-                        else self.second_pass_model_var.get().strip()
-                    ),
-                    "suffix": self.second_pass_suffix_var.get().strip(),
-                    "width": int((second_cfg.get("options") or {}).get("width", self.second_pass_width.get())),
-                    "height": int((second_cfg.get("options") or {}).get("height", self.second_pass_height.get())),
-                    "steps": int((second_cfg.get("options") or {}).get("steps", self.second_pass_steps.get())),
-                    "cfg_scale": float((second_cfg.get("options") or {}).get("cfg_scale", self.second_pass_cfg.get())),
-                    "sampling_method": str((second_cfg.get("options") or {}).get("sampling_method", self.second_pass_sampling.get())),
-                    "scheduler": str((second_cfg.get("options") or {}).get("scheduler", self.second_pass_scheduler.get())),
-                    "strength": float(self.second_pass_strength.get()),
-                    "settings": self._history_second_pass_settings(second_cfg),
-                }
-                rc2 = self._run_config(
-                    second_cfg,
-                    step_label="Step 2/2 - automated second pass",
-                    use_i2=True,
-                    init_src=out,
-                    strength=float(self.second_pass_strength.get()),
-                )
-                if rc2 == 0 and Path(second_out).expanduser().exists():
-                    hist2 = {**second_history, "created": datetime.now().isoformat(timespec="seconds")}
-                    if bool(self.embed_metadata_var.get()):
-                        self._embed_metadata_into_image(second_out, hist2)
-                    self.after(0, lambda h=hist2: self._append_history(h))
-                self.status.set("Stopped." if self._stop_requested.is_set() else f"Done (pass 2 exit {rc2}).")
-            except Exception as e:
+                self.after(0, lambda p=n_pending: self.status.set(f"Running… ({p} queued)"))
+                self._execute_generation_job(job)
                 if self._stop_requested.is_set():
-                    self.status.set("Stopped.")
-                else:
-                    self.append_log(f"[ERROR] {e}\n")
-                    self.status.set("Error.")
+                    break
+        except Exception as e:
+            self.append_log(f"[ERROR] {e}\n")
+            self.after(0, lambda: self.status.set("Error."))
+        finally:
+            try:
+                if sys.platform == "win32" and self._suspended_pids:
+                    _win_resume_process_tree(self._suspended_pids)
             finally:
-                self._active_phase = ""
+                self._paused = False
+                self._suspended_pids.clear()
+            stopped = self._stop_requested.is_set()
+            with self._queue_lock:
+                pending = len(self._gen_queue)
+            pr = processed
+
+            def _finish_ui() -> None:
                 self.run_btn.config(state=tk.NORMAL)
                 self.stop_btn.config(state=tk.DISABLED)
+                self.skip_btn.config(state=tk.DISABLED)
+                self.pause_btn.configure(text="Pause", state=tk.DISABLED)
+                if stopped and pending:
+                    self.status.set(f"Stopped ({pending} jobs left in queue). Use Run or Add to resume.")
+                elif pr > 0 and not stopped and pending == 0:
+                    self.status.set("All queued jobs finished.")
+                elif pending > 0:
+                    self.status.set(f"{pending} job(s) in queue — use Run or Add to start.")
+                else:
+                    self.status.set("Idle.")
 
-        self._run_thread = threading.Thread(target=worker, daemon=True)
+            self.after(0, _finish_ui)
+
+    def _ensure_queue_worker(self) -> None:
+        t = getattr(self, "_run_thread", None)
+        if t is not None and t.is_alive():
+            return
+        with self._queue_lock:
+            if not self._gen_queue:
+                return
+        self._stop_requested.clear()
+        self._skip_requested.clear()
+        self._begin_queue_session_ui()
+        self._run_thread = threading.Thread(target=self._queue_worker_loop, daemon=True)
         self._run_thread.start()
+
+    def on_enqueue(self) -> None:
+        is_edit, err = self._validate_generation_prereqs()
+        if err:
+            messagebox.showerror("Queue", err)
+            return
+        reserved = self._reserved_output_paths_from_queue()
+        out = self.unique_output_path(self.out_var.get().strip(), reserved=reserved)
+        prompt = self.prompt.get("1.0", "end").strip()
+        job = self._build_generation_job(
+            is_edit_tab=is_edit, out=out, prompt_simple=prompt, reserved_outputs=reserved
+        )
+        with self._queue_lock:
+            self._gen_queue.append(job)
+        self._refresh_queue_display()
+        self._ensure_queue_worker()
+
+    def on_remove_queue_selection(self) -> None:
+        sel = self.queue_tree.selection()
+        if not sel:
+            messagebox.showinfo("Queue", "Select a queued job to remove.")
+            return
+        idx = int(sel[0])
+        with self._queue_lock:
+            if 0 <= idx < len(self._gen_queue):
+                self._gen_queue.pop(idx)
+        self._refresh_queue_display()
+
+    def on_clear_queue(self) -> None:
+        with self._queue_lock:
+            self._gen_queue.clear()
+        self._refresh_queue_display()
+
+    def on_skip_current(self) -> None:
+        if self._proc is None or self._proc.poll() is not None:
+            messagebox.showinfo("Skip", "No generation step is running right now.")
+            return
+        self._skip_requested.set()
+        self.append_log("[INFO] Skip: stopping current subprocess; queue will continue.\n")
+        self._kill_proc_tree(self._proc)
+
+    def on_stop(self) -> None:
+        self._skip_requested.clear()
+        self._stop_requested.set()
+        if self._proc and self._proc.poll() is None:
+            self.append_log("[INFO] Stop: forcing subprocess tree to exit (hard stop)…\n")
+            self._kill_proc_tree(self._proc)
+
+    def on_run(self) -> None:
+        is_edit, err = self._validate_generation_prereqs()
+        if err:
+            messagebox.showerror("Run", err)
+            return
+        reserved = self._reserved_output_paths_from_queue()
+        out = self.unique_output_path(self.out_var.get().strip(), reserved=reserved)
+        prompt = self.prompt.get("1.0", "end").strip()
+        job = self._build_generation_job(
+            is_edit_tab=is_edit, out=out, prompt_simple=prompt, reserved_outputs=reserved
+        )
+        with self._queue_lock:
+            was_running = getattr(self, "_run_thread", None) is not None and self._run_thread.is_alive()
+            self._gen_queue.insert(0, job)
+        self._refresh_queue_display()
+        if not was_running:
+            self.log.delete("1.0", "end")
+        self._ensure_queue_worker()
 
 
 if __name__ == "__main__":

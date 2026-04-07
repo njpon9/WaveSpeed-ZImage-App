@@ -16,6 +16,19 @@ BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_LOCAL_LORAS_DIR = BASE_DIR / "LoRas"
 
 
+def _print_for_console(msg: str, *, stream=sys.stdout) -> None:
+    """Print without crashing on Windows (cp1252) when the line contains Unicode."""
+    try:
+        print(msg, file=stream, flush=True)
+    except UnicodeEncodeError:
+        buf = getattr(stream, "buffer", None)
+        if buf is not None:
+            buf.write((msg + "\n").encode("utf-8", errors="replace"))
+            buf.flush()
+        else:
+            print(msg.encode("ascii", errors="backslashreplace").decode("ascii"), file=stream, flush=True)
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description="Run sd.exe from a JSON config (GUI).")
     p.add_argument("--config-json", required=True, help="Path to JSON config file.")
@@ -23,7 +36,7 @@ def main() -> int:
 
     path = Path(args.config_json).expanduser()
     if not path.exists():
-        print(f"[ERROR] Config not found: {path}", file=sys.stderr)
+        _print_for_console(f"[ERROR] Config not found: {path}", stream=sys.stderr)
         return 2
 
     with path.open(encoding="utf-8") as f:
@@ -48,15 +61,15 @@ def main() -> int:
     try:
         cmd = build_sd_command(cfg)
     except ValueError as e:
-        print(f"[ERROR] {e}", file=sys.stderr)
+        _print_for_console(f"[ERROR] {e}", stream=sys.stderr)
         return 2
 
     sd = Path(cmd[0])
     if not sd.exists():
-        print(f"[ERROR] sd.exe not found: {sd}", file=sys.stderr)
+        _print_for_console(f"[ERROR] sd.exe not found: {sd}", stream=sys.stderr)
         return 2
 
-    print("[INFO] Running:", " ".join(f'"{c}"' if " " in c else c for c in cmd))
+    _print_for_console("[INFO] Running: " + " ".join(f'"{c}"' if " " in c else c for c in cmd))
     proc = subprocess.run(cmd, capture_output=False, text=True)
     return int(proc.returncode)
 
